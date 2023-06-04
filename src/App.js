@@ -1,19 +1,18 @@
-import { Formulario } from './Componentes/Formulario';
-import { Home } from './Componentes/Home';
-import { useState } from 'react';
 import './App.css';
 
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { Login } from './Componentes/Login'
+
 function App() {
-
-  const [user, setUser] = useState ([])
-
   return (
     <div className="App">
-      {
-        !user.length > 0
-        ? <Formulario setUser={setUser} />
-        : <Home user={user} setUser={setUser} />
-      }
+      
+      <BrowserRouter>
+        <Routes>
+          <Route exact path="/" element={<Login/>}/>
+        </Routes>
+      </BrowserRouter>
+
     </div>
   );
 }
