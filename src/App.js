@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { compressPassword } from './huffman'; 
 
 const App = () => {
   const [email, setEmail] = useState('');
@@ -22,7 +23,8 @@ const App = () => {
 
   const handleRegister = () => {
     alert('Cuenta creada exitosamente!');
-    const newAccount = { email, username, password };
+    const compressedPassword = compressPassword(password);
+    const newAccount = { email, username, password: compressedPassword };
     setAccounts([...accounts, newAccount]);
     setEmail('');
     setUsername('');
@@ -30,19 +32,24 @@ const App = () => {
   };
 
   const handleLogin = () => {
+    const compressedPassword = compressPassword(password);
+  
     const account = accounts.find(
-      (acc) => acc.username === username && acc.password === password
+      (acc) => acc.username === username && acc.password === compressedPassword
     );
+  
     if (account) {
       setIsLoggedIn(true);
       alert('Inicio de sesión exitoso');
     } else {
       alert('Credenciales inválidas');
     }
+  
     setEmail('');
     setUsername('');
     setPassword('');
   };
+  
 
   const handleLogout = () => {
     setIsLoggedIn(false);
