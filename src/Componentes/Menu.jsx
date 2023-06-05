@@ -46,7 +46,7 @@ export const Menu = (props) => {
     <div id="caja_menu" style={{textAlign:"left"}}>
 
     <strong className="h3">
-      Bienvenido Usuario : { usu.toUpperCase() }
+      Bienvenido Usuario : { usu }
     </strong>
               
     <nav className="navbar navbar-expand-lg navbar-light bg-light" style={{marginTop:20}}>
