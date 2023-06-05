@@ -21,6 +21,7 @@ const App = () => {
   };
 
   const handleRegister = () => {
+    alert('Cuenta creada exitosamente!');
     const newAccount = { email, username, password };
     setAccounts([...accounts, newAccount]);
     setEmail('');
