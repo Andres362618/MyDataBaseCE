@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { compressPassword } from './huffman'; 
 
 const App = () => {
@@ -8,6 +8,17 @@ const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [accounts, setAccounts] = useState([]);
+
+  useEffect(() => {
+    const storedAccounts = localStorage.getItem('accounts');
+    if (storedAccounts) {
+      setAccounts(JSON.parse(storedAccounts));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('accounts', JSON.stringify(accounts));
+  }, [accounts]);
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
