@@ -1,0 +1,27 @@
+.mysql-interface {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .mysql-sidebar {
+    background-color: #f0f0f0;
+    width: 200px;
+  }
+  
+  .mysql-sidebar ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .mysql-sidebar li {
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .mysql-content {
+    flex: 1;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  

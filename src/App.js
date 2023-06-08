@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { compressPassword } from './huffman'; 
+import './styles.css';
 
 const App = () => {
   const [email, setEmail] = useState('');
@@ -51,7 +52,6 @@ const App = () => {
   
     if (account) {
       setIsLoggedIn(true);
-      alert('Inicio de sesión exitoso');
     } else {
       alert('Credenciales inválidas');
     }
@@ -69,8 +69,20 @@ const App = () => {
   if (isLoggedIn) {
     return (
       <div>
-        <h2>Bienvenido</h2>
-        <button onClick={handleLogout}>Cerrar Sesión</button>
+        <h2>Bienvenido MyDataBaseCE</h2>
+        <div className="mysql-interface">
+          <div className="mysql-sidebar">
+            <ul>
+              <li>Databases</li>
+              <li>Tables</li>
+              <li>Queries</li>
+              <li>Settings</li>
+              <li onClick={handleLogout}>Logout</li>
+            </ul>
+          </div>
+          <div className="mysql-content">
+          </div>
+        </div>
       </div>
     );
   }
