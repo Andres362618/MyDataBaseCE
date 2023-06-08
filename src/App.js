@@ -34,6 +34,12 @@ const App = () => {
   };
 
   const handleRegister = () => {
+
+    if (email.trim() === '' || username.trim() === '' || password.trim() === '') {
+      alert('Debes llenar el formulario.');
+      return;
+    }
+
     alert('Cuenta creada exitosamente!');
     const compressedPassword = compressPassword(password);
     const newAccount = { email, username, password: compressedPassword };
@@ -44,6 +50,12 @@ const App = () => {
   };
 
   const handleLogin = () => {
+
+    if (username.trim() === '' || password.trim() === '') {
+      alert('Debes llenar el formulario.');
+      return;
+    }
+
     const compressedPassword = compressPassword(password);
   
     const account = accounts.find(
@@ -60,7 +72,6 @@ const App = () => {
     setUsername('');
     setPassword('');
   };
-  
 
   const handleLogout = () => {
     setIsLoggedIn(false);
@@ -105,7 +116,7 @@ const App = () => {
           <input type="password" className="form-control" value={password} onChange={handlePasswordChange} />
         </div><br/>
         <div>
-          <button onClick={handleLogin}>Iniciar Sesión</button>
+          <button onClick={handleLogin} style={{ marginRight: '10px' }}>Iniciar Sesión</button>
           <button onClick={handleRegister}>Crear Cuenta</button>
         </div>
       </div>
