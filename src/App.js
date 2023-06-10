@@ -20,6 +20,39 @@ const App = () => {
   const [searchConditions, setSearchConditions] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
 
+  const [newColumnName, setNewColumnName] = useState('');
+  const [newRow, setNewRow] = useState([]);
+
+  const handleAddColumn = () => {
+    if (newColumnName.trim() === '') {
+      alert('Please enter a column name.');
+      return;
+    }
+  
+    const updatedColumns = [...selectedTable.columns, newColumnName];
+    const updatedTable = { ...selectedTable, columns: updatedColumns };
+    const updatedTables = tables.map((table) => (table === selectedTable ? updatedTable : table));
+  
+    setTables(updatedTables);
+    setSelectedTable(updatedTable);
+    setNewColumnName('');
+  };
+  
+  const handleAddRow = () => {
+    if (newRow.length !== selectedTable.columns.length) {
+      alert('Please enter data for all columns.');
+      return;
+    }
+  
+    const updatedRows = [...selectedTable.rows, newRow];
+    const updatedTable = { ...selectedTable, rows: updatedRows };
+    const updatedTables = tables.map((table) => (table === selectedTable ? updatedTable : table));
+  
+    setTables(updatedTables);
+    setSelectedTable(updatedTable);
+    setNewRow([]);
+  };  
+
   const handleSearch = () => {
     if (searchConditions.length === 0) {
       alert('Ingrese al menos una condición de búsqueda.');
@@ -345,44 +378,75 @@ const App = () => {
           <h4>Buscar registros</h4>
           {renderSearchConditions()}
           <button onClick={handleAddCondition}>Agregar Condición</button>
-          <button onClick={handleSearch}>Buscar</button>
+          <button style={{marginLeft:"10px"}} onClick={handleSearch}>Buscar</button>
         </div>
-        <table>
-          <thead>
-            <tr>
-              {columns.map((column) => (
-                <th key={column} style={{ border: '1px solid black', padding: '5px' }}>
-                  {column}
-                </th>
+        {/* Add column form */}
+      <div>
+        <h4>Añadir Columna</h4>
+        <input
+          type="text"
+          placeholder="Column Name"
+          value={newColumnName}
+          onChange={(e) => setNewColumnName(e.target.value)}
+        />
+        <button style={{marginLeft:"10px"}} onClick={handleAddColumn}>Añadir Columna</button>
+      </div>
+
+      {/* Add row form */}
+      <div>
+        <h4>Añadir Fila</h4>
+        {selectedTable.columns.map((column, columnIndex) => (
+          <input
+            key={columnIndex}
+            type="text"
+            placeholder={column}
+            value={newRow[columnIndex] || ''}
+            onChange={(e) => {
+              const updatedRow = [...newRow];
+              updatedRow[columnIndex] = e.target.value;
+              setNewRow(updatedRow);
+            }}
+          />
+        ))}
+        <br/><button style={{marginTop:"10px", marginBottom:"10px"}}onClick={handleAddRow}>Añadir Fila</button>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            {columns.map((column) => (
+              <th key={column} style={{ border: '1px solid black', padding: '5px' }}>
+                {column}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row, rowIndex) => (
+            <tr key={rowIndex}>
+              {row.map((cell, columnIndex) => (
+                <td
+                  key={columnIndex}
+                  onClick={() => handleCellClick(rowIndex, columnIndex, cell)}
+                  style={{ border: '1px solid black', padding: '5px' }}
+                >
+                  {selectedCell && selectedCell.rowIndex === rowIndex && selectedCell.columnIndex === columnIndex ? (
+                    <input
+                      type="text"
+                      value={editedCellValue}
+                      onChange={handleCellChange}
+                      onBlur={handleCellBlur}
+                    />
+                  ) : (
+                    cell
+                  )}
+                </td>
               ))}
             </tr>
-          </thead>
-          <tbody>
-            {rows.map((row, rowIndex) => (
-              <tr key={rowIndex}>
-                {row.map((cell, columnIndex) => (
-                  <td
-                    key={columnIndex}
-                    onClick={() => handleCellClick(rowIndex, columnIndex, cell)}
-                    style={{ border: '1px solid black', padding: '5px' }}
-                  >
-                    {selectedCell && selectedCell.rowIndex === rowIndex && selectedCell.columnIndex === columnIndex ? (
-                      <input
-                        type="text"
-                        value={editedCellValue}
-                        onChange={handleCellChange}
-                        onBlur={handleCellBlur}
-                      />
-                    ) : (
-                      cell
-                    )}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        {renderSearchResults()}
+          ))}
+        </tbody>
+      </table>
+      {renderSearchResults()}
       </div>
     );
   };      
