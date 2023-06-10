@@ -40,10 +40,6 @@ const App = () => {
             continue;
           } else if (operator === '!=' && cellValue !== value) {
             continue;
-          } else if (operator === '>' && parseFloat(cellValue) > parseFloat(value)) {
-            continue;
-          } else if (operator === '<' && parseFloat(cellValue) < parseFloat(value)) {
-            continue;
           }
         } else {
           const cellValue = row[columnIndex];
@@ -51,10 +47,6 @@ const App = () => {
           if (operator === '=' && cellValue === value) {
             continue;
           } else if (operator === '!=' && cellValue !== value) {
-            continue;
-          } else if (operator === '>' && parseFloat(cellValue) > parseFloat(value)) {
-            continue;
-          } else if (operator === '<' && parseFloat(cellValue) < parseFloat(value)) {
             continue;
           }
         }
