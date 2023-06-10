@@ -17,26 +17,144 @@ const App = () => {
   const [selectedCell, setSelectedCell] = useState(null);
   const [editedCellValue, setEditedCellValue] = useState('');
 
+  const [searchConditions, setSearchConditions] = useState([]);
+  const [searchResults, setSearchResults] = useState([]);
+
+  const handleSearch = () => {
+    if (searchConditions.length === 0) {
+      alert('Ingrese al menos una condición de búsqueda.');
+      return;
+    }
+  
+    const matchedRows = selectedTable.rows.filter((row) => {
+      for (const condition of searchConditions) {
+        const [columnName, operator, value] = condition;
+  
+        const columnIndex = selectedTable.columns.indexOf(columnName);
+  
+        if (columnIndex === 0) {
+          // Special handling for the first column
+          const cellValue = row[0].toString();
+  
+          if (operator === '=' && cellValue === value) {
+            continue;
+          } else if (operator === '!=' && cellValue !== value) {
+            continue;
+          } else if (operator === '>' && parseFloat(cellValue) > parseFloat(value)) {
+            continue;
+          } else if (operator === '<' && parseFloat(cellValue) < parseFloat(value)) {
+            continue;
+          }
+        } else {
+          const cellValue = row[columnIndex];
+  
+          if (operator === '=' && cellValue === value) {
+            continue;
+          } else if (operator === '!=' && cellValue !== value) {
+            continue;
+          } else if (operator === '>' && parseFloat(cellValue) > parseFloat(value)) {
+            continue;
+          } else if (operator === '<' && parseFloat(cellValue) < parseFloat(value)) {
+            continue;
+          }
+        }
+  
+        return false;
+      }
+  
+      return true;
+    });
+  
+    setSearchResults(matchedRows);
+  };
+
+  const handleAddCondition = () => {
+    if (searchConditions.length >= 3) {
+      alert('Solo se permiten hasta 3 condiciones de búsqueda.');
+      return;
+    }
+
+    const newCondition = ['', '=', ''];
+    setSearchConditions([...searchConditions, newCondition]);
+  };
+
+  const handleRemoveCondition = (index) => {
+    const updatedConditions = searchConditions.filter((_, i) => i !== index);
+    setSearchConditions(updatedConditions);
+  };
+
+  const handleConditionChange = (index, column, operator, value) => {
+    const updatedConditions = [...searchConditions];
+    updatedConditions[index] = [column, operator, value];
+    setSearchConditions(updatedConditions);
+  };
+
+  const renderSearchConditions = () => {
+    return searchConditions.map((condition, index) => (
+      <div key={index} style={{ marginBottom: '10px' }}>
+        <select
+          value={condition[0]}
+          onChange={(e) => handleConditionChange(index, e.target.value, condition[1], condition[2])}
+        >
+          {selectedTable.columns.map((column) => (
+            <option key={column} value={column}>
+              {column}
+            </option>
+          ))}
+        </select>
+        <select
+          value={condition[1]}
+          onChange={(e) => handleConditionChange(index, condition[0], e.target.value, condition[2])}
+        >
+          <option value="=">=</option>
+          <option value="!=">!=</option>
+        </select>
+        <input
+          type="text"
+          value={condition[2]}
+          onChange={(e) => handleConditionChange(index, condition[0], condition[1], e.target.value)}
+        />
+        <button onClick={() => handleRemoveCondition(index)}>Eliminar</button>
+      </div>
+    ));
+  };
+
+  const renderSearchResults = () => {
+    if (searchResults.length === 0) {
+      return <div>No se encontraron resultados.</div>;
+    }
+
+    return (
+      <div>
+        <h3>Resultados de búsqueda</h3>
+        <ul>
+          {searchResults.map((row, index) => (
+            <li key={index}>{row.join(', ')}</li>
+          ))}
+        </ul>
+      </div>
+    );
+  };
+
   useEffect(() => {
     const storedAccounts = localStorage.getItem('accounts');
     if (storedAccounts) {
       setAccounts(JSON.parse(storedAccounts));
     }
 
-    // Initialize databases and tables
     const initialDatabases = [
       {
         name: 'MyDatabase',
         tables: [
           {
-            name: 'Users',
-            columns: ['id', 'username', 'email', 'password'],
+            name: 'Miembros',
+            columns: ['id', 'nombre', 'apellido', 'email', 'password'],
             rows: [
-              [1, 'JohnDoe', 'john@example.com', 'password123'],
-              [2, 'JaneDoe', 'jane@example.com', 'password456'],
+              [2023397041, 'Julia', 'Harlander', 'mharlander@estudiantec.cr', 'julia123'],
+              [201058559, 'Claudio', 'Arce', 'claarce@estudiantec.cr', 'claudio456'],
+              [2021572460, 'Andrés', 'Madrigal', 'anmadrigalv@gmail.com', 'andres789'],
             ],
           },
-          // Add more tables if needed
         ],
       },
     ];
@@ -121,7 +239,7 @@ const App = () => {
   const handleSelectDatabase = (database) => {
     setSelectedDatabase(database);
     setTables(database.tables);
-    setSelectedTable(null); // Reset selected table when switching databases
+    setSelectedTable(null);
   };
 
   const handleCreateTable = () => {
@@ -129,29 +247,41 @@ const App = () => {
       alert('Debe seleccionar una base de datos antes de crear una tabla.');
       return;
     }
-
+  
     const tableName = prompt('Ingrese el nombre de la tabla:');
     if (tableName) {
+      const attributes = [];
+      let attributeName;
+      while (true) {
+        attributeName = prompt('Ingrese un atributo (deje en blanco para finalizar):');
+        if (attributeName === null || attributeName.trim() === '') {
+          break;
+        }
+        attributes.push(attributeName.trim());
+      }
+  
       const newTable = {
         name: tableName,
-        columns: [],
+        columns: attributes,
         rows: [],
       };
+  
       const updatedDatabase = {
         ...selectedDatabase,
         tables: [...tables, newTable],
       };
+  
       setDatabases(
         databases.map((database) => (database === selectedDatabase ? updatedDatabase : database))
       );
       setTables(updatedDatabase.tables);
       setSelectedTable(newTable);
     }
-  };
+  };  
 
   const handleSelectTable = (table) => {
     setSelectedTable(table);
-    setSelectedCell(null); // Reset selected cell when switching tables
+    setSelectedCell(null);
   };
 
   const handleCellClick = (rowIndex, columnIndex, value) => {
@@ -204,17 +334,25 @@ const App = () => {
     if (!selectedTable) {
       return <div>No table selected</div>;
     }
-
+  
     const { columns, rows } = selectedTable;
-
+  
     return (
       <div>
         <h3>{selectedTable.name}</h3>
+        <div style={{ marginBottom: '10px' }}>
+          <h4>Buscar registros</h4>
+          {renderSearchConditions()}
+          <button onClick={handleAddCondition}>Agregar Condición</button>
+          <button onClick={handleSearch}>Buscar</button>
+        </div>
         <table>
           <thead>
             <tr>
               {columns.map((column) => (
-                <th key={column}>{column}</th>
+                <th key={column} style={{ border: '1px solid black', padding: '5px' }}>
+                  {column}
+                </th>
               ))}
             </tr>
           </thead>
@@ -225,6 +363,7 @@ const App = () => {
                   <td
                     key={columnIndex}
                     onClick={() => handleCellClick(rowIndex, columnIndex, cell)}
+                    style={{ border: '1px solid black', padding: '5px' }}
                   >
                     {selectedCell && selectedCell.rowIndex === rowIndex && selectedCell.columnIndex === columnIndex ? (
                       <input
@@ -242,9 +381,10 @@ const App = () => {
             ))}
           </tbody>
         </table>
+        {renderSearchResults()}
       </div>
     );
-  };
+  };      
 
   if (isLoggedIn) {
     return (
