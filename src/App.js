@@ -152,9 +152,18 @@ const App = () => {
             rows: [
               [2023397041, 'Julia', 'Harlander', 'mharlander@estudiantec.cr', 'julia123'],
               [201058559, 'Claudio', 'Arce', 'claarce@estudiantec.cr', 'claudio456'],
-              [2021572460, 'Andrés', 'Madrigal', 'anmadrigalv@gmail.com', 'andres789'],
+              [2021572460, 'Andrés', 'Vega', 'anmadrigalv@estudiantec.cr', 'andres789'],
             ],
           },
+          {
+            name: 'Familiares',
+            columns: ['id', 'nombre', 'apellido', 'email', 'password'],
+            rows: [
+              [2023842691, 'Vanessa', 'Harlander', 'vharlander@gmail.com', 'vane123'],
+              [201073142, 'Jorge', 'Arce', 'jraarce@gmail.com', 'jorge456'],
+              [2021687519, 'Tatiana', 'Vega', 'gfa@gmail.com', 'gfa789'],
+            ],
+          }
         ],
       },
     ];
