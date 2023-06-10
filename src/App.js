@@ -25,7 +25,7 @@ const App = () => {
 
   const handleAddColumn = () => {
     if (newColumnName.trim() === '') {
-      alert('Please enter a column name.');
+      alert('Favor ingresar el nombre de la columna.');
       return;
     }
   
@@ -40,7 +40,7 @@ const App = () => {
   
   const handleAddRow = () => {
     if (newRow.length !== selectedTable.columns.length) {
-      alert('Please enter data for all columns.');
+      alert('Favor ingresar datos para todas las columnas.');
       return;
     }
   
@@ -377,8 +377,8 @@ const App = () => {
         <div style={{ marginBottom: '10px' }}>
           <h4>Buscar registros</h4>
           {renderSearchConditions()}
-          <button onClick={handleAddCondition}>Agregar Condición</button>
-          <button style={{marginLeft:"10px"}} onClick={handleSearch}>Buscar</button>
+          <button onClick={handleSearch}>Buscar</button>
+          <button style={{marginLeft:"10px"}} onClick={handleAddCondition}>Agregar Condición</button>
         </div>
         {/* Add column form */}
       <div>
