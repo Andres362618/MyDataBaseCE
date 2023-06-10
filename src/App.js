@@ -385,7 +385,7 @@ const App = () => {
         <h4>Añadir Columna</h4>
         <input
           type="text"
-          placeholder="Column Name"
+          placeholder="Nombre de la columna"
           value={newColumnName}
           onChange={(e) => setNewColumnName(e.target.value)}
         />
