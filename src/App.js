@@ -33,6 +33,9 @@ const App = () => {
     const updatedTable = { ...selectedTable, columns: updatedColumns };
     const updatedTables = tables.map((table) => (table === selectedTable ? updatedTable : table));
   
+    const updatedRows = selectedTable.rows.map((row) => [...row, '']);
+    updatedTable.rows = updatedRows;
+
     setTables(updatedTables);
     setSelectedTable(updatedTable);
     setNewColumnName('');
