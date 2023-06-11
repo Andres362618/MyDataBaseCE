@@ -23,6 +23,12 @@ const App = () => {
   const [newColumnName, setNewColumnName] = useState('');
   const [newRow, setNewRow] = useState([]);
 
+  const handleDeleteTable = (table) => {
+    const updatedTables = tables.filter((t) => t !== table);
+    setTables(updatedTables);
+    setSelectedTable(null); // If the deleted table was selected, clear the selected table
+  };
+  
   const handleAddColumn = () => {
     if (newColumnName.trim() === '') {
       alert('Favor ingresar el nombre de la columna.');
@@ -492,6 +498,17 @@ const App = () => {
                 <ul>
                   {renderTableList()}
                   <li onClick={handleCreateTable}>Crear nueva tabla</li>
+                </ul>
+              </li>
+              <li>
+                <strong>Borrar Tablas</strong>
+                <ul>
+                  {tables.map((table) => (
+                    <div key={table.name}>
+                      <span style={{marginLeft:"10px"}}>{table.name}</span>
+                      <button style={{marginLeft:"10px"}} onClick={() => handleDeleteTable(table)}>Delete</button>
+                    </div>
+                  ))}
                 </ul>
               </li>
               <li onClick={handleLogout}><strong>Logout</strong></li>
