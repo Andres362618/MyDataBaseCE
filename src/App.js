@@ -364,6 +364,24 @@ const App = () => {
     ));
   };
 
+  const handleSaveChanges = () => {
+    alert("Se guardaron los cambios con éxito");
+    // Perform save operation here
+    // You can update the state or send the updated data to a backend server
+  
+    // For example, you can update the local state with the modified tables
+    const updatedDatabase = {
+      ...selectedDatabase,
+      tables: tables.map((table) => (table === selectedTable ? selectedTable : table)),
+    };
+  
+    const updatedDatabases = databases.map((database) =>
+      database === selectedDatabase ? updatedDatabase : database
+    );
+  
+    setDatabases(updatedDatabases);
+  };
+
   const renderTableContent = () => {
     if (!selectedTable) {
       return <div>No table selected</div>;
@@ -447,6 +465,7 @@ const App = () => {
         </tbody>
       </table>
       {renderSearchResults()}
+      <button onClick={handleSaveChanges}>Guardar Cambios</button>
       </div>
     );
   };      
