@@ -392,12 +392,6 @@ const App = () => {
     return (
       <div>
         <h3>{selectedTable.name}</h3>
-        <div style={{ marginBottom: '10px' }}>
-          <h4>Buscar registros</h4>
-          {renderSearchConditions()}
-          <button onClick={handleSearch}>Buscar</button>
-          <button style={{marginLeft:"10px"}} onClick={handleAddCondition}>Agregar Condición</button>
-        </div>
         {/* Add column form */}
       <div>
         <h4>Añadir Columna</h4>
@@ -464,8 +458,14 @@ const App = () => {
           ))}
         </tbody>
       </table>
+      <button style={{marginTop:"10px"}} onClick={handleSaveChanges}>Guardar Cambios</button>
+      <div style={{ marginBottom: '10px' }}>
+          <h4>Buscar registros</h4>
+          {renderSearchConditions()}
+          <button onClick={handleSearch}>Buscar</button>
+          <button style={{marginLeft:"10px"}} onClick={handleAddCondition}>Agregar Condición</button>
+      </div>
       {renderSearchResults()}
-      <button onClick={handleSaveChanges}>Guardar Cambios</button>
       </div>
     );
   };      
