@@ -473,7 +473,7 @@ const App = () => {
   if (isLoggedIn) {
     return (
       <div>
-        <h2>Bienvenido MyDataBaseCE</h2>
+        <h2>Bienvenido a MyDataBaseCE</h2>
         <div className="mysql-interface">
           <div className="mysql-sidebar">
             <ul>
@@ -491,7 +491,7 @@ const App = () => {
                   <li onClick={handleCreateTable}>Crear nueva tabla</li>
                 </ul>
               </li>
-              <li onClick={handleLogout}>Logout</li>
+              <li onClick={handleLogout}><strong>Logout</strong></li>
             </ul>
           </div>
           <div className="mysql-content">{renderTableContent()}</div>
