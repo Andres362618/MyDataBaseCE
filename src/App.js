@@ -44,8 +44,8 @@ const App = () => {
   const [newRow, setNewRow] = useState([]);
 
   /**
-   * Funcion encargada de eliminar bases de datos
-   * @param {database} Recibe la base de datos a eliminar 
+   * Funcion encargada de eliminar XML store
+   * @param {XML store} Recibe la base de datos a eliminar 
    */
   const handleDeleteDatabase = (database) => {
     const updatedDatabases = databases.filter((db) => db !== database);
@@ -60,13 +60,13 @@ const App = () => {
   };
 
   /**
-   * Funcion encargada de eliminar los XML store
-   * @param {table} Elimina la tabla seleccionada
+   * Funcion encargada de eliminar las intancias
+   * @param {Instancia} Elimina la tabla seleccionada
    */
   const handleDeleteTable = (table) => {
     const updatedTables = tables.filter((t) => t !== table);
     setTables(updatedTables);
-    setSelectedTable(null); // If the deleted table was selected, clear the selected table
+    setSelectedTable(null);
   };
 
   /**
@@ -111,7 +111,7 @@ const App = () => {
   };  
 
   /**
-   * Funcion encargada de llevar a cabo las busquedas en los XML store
+   * Funcion encargada de llevar a cabo las busquedas en las instancias
    * @returns 
    */
   const handleSearch = () => {
@@ -383,10 +383,10 @@ const App = () => {
   };
 
   /**
-   * Funcion encargada de crear una base de datos nueva
+   * Funcion encargada de crear un XML store nuevo
    */
   const handleCreateDatabase = () => {
-    const databaseName = prompt('Ingrese el nombre de la base de datos nueva:');
+    const databaseName = prompt('Ingrese el nombre del XML store nuevo:');
     if (databaseName) {
       const newDatabase = {
         name: databaseName,
@@ -399,8 +399,8 @@ const App = () => {
   };
 
   /**
-   * Funcion encargada de seleccionar las bases de datos
-   * @param {database} Base de datos 
+   * Funcion encargada de seleccionar los XML store
+   * @param {XML store} Base de datos 
    */
   const handleSelectDatabase = (database) => {
     setSelectedDatabase(database);
@@ -409,16 +409,16 @@ const App = () => {
   };
 
   /**
-   * Funcion encargada de crear el XML store
+   * Funcion encargada de crear las intancias
    * @returns 
    */
   const handleCreateTable = () => {
     if (!selectedDatabase) {
-      alert('Debe seleccionar una base de datos antes de crear un XML store.');
+      alert('Debe seleccionar una base de datos antes de crear una instancia.');
       return;
     }
   
-    const tableName = prompt('Ingrese el nombre del XML store:');
+    const tableName = prompt('Ingrese el nombre de la instancia:');
     if (tableName) {
       const attributes = [];
       let attributeName;
@@ -450,8 +450,8 @@ const App = () => {
   };  
 
   /**
-   * Funcion encargada de seleccionar una XML store
-   * @param {XML store} Tabla 
+   * Funcion encargada de seleccionar una instancia
+   * @param {Instancia} Tabla 
    */
   const handleSelectTable = (table) => {
     setSelectedTable(table);
@@ -459,7 +459,7 @@ const App = () => {
   };
 
   /**
-   * Funcion encargada de seleccionar las celdas en un XML store
+   * Funcion encargada de seleccionar las celdas en una instancia
    * @param {rowIndex} Fila
    * @param {columnIndex} Columna
    * @param {value} Valor
@@ -502,7 +502,7 @@ const App = () => {
   };
 
   /**
-   * Funcion encargada de renderizar la lista de las bases de datos
+   * Funcion encargada de renderizar la lista de los XML store
    * @returns 
    */
   const renderDatabaseList = () => {
@@ -515,7 +515,7 @@ const App = () => {
   };
 
   /**
-   * Funcion encargada de renderizar los XML store
+   * Funcion encargada de renderizar las instancias
    * @returns 
    */
   const renderTableList = () => {
@@ -546,12 +546,12 @@ const App = () => {
   };
 
   /**
-   * Funcion encargada de renderizar el contenido de los XML store
+   * Funcion encargada de renderizar el contenido de las instancias
    * @returns 
    */
   const renderTableContent = () => {
     if (!selectedTable) {
-      return <div>No se ha seleccionado ningun XML store</div>;
+      return <div>No se ha seleccionado ninguna instancia</div>;
     }
   
     const { columns, rows } = selectedTable;
@@ -646,17 +646,17 @@ const App = () => {
           <div className="mysql-sidebar">
             <ul>
               <li>
-                <strong>Databases</strong>
+                <strong>XML stores</strong>
                 <ul>
                   {renderDatabaseList()}
-                  <li onClick={handleCreateDatabase}>Crear nueva base de datos</li>
+                  <li onClick={handleCreateDatabase}>Crear nuevo XML store</li>
                 </ul>
               </li>
               <li>
-                <strong>XML stores</strong>
+                <strong>Instancias</strong>
                 <ul>
                   {renderTableList()}
-                  <li onClick={handleCreateTable}>Crear un XML store</li>
+                  <li onClick={handleCreateTable}>Crear nueva instancia</li>
                 </ul>
               </li>
               <li onClick={handleLogout}><strong>Logout</strong></li>
