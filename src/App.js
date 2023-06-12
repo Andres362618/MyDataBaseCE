@@ -1,8 +1,27 @@
+/**
+ * @file App.js
+ * @author Andrés Madrigral, Claudio Arce, Julia Harlander
+ * @version 1.0
+ * @description Esta es la funcion principal de la pagina web
+ */
+
+/**
+ * Importa librerias, archivo huffman y archivo styles.css
+ */
 import React, { useState, useEffect } from 'react';
 import { compressPassword } from './huffman';
 import './styles.css';
 
+/**
+ * Funcion principal de la pagina web
+ * 
+ * @returns 
+ */
 const App = () => {
+
+  /**
+   * Establece valores y sus seters
+   */
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -23,11 +42,15 @@ const App = () => {
   const [newColumnName, setNewColumnName] = useState('');
   const [newRow, setNewRow] = useState([]);
 
+  /**
+   * Funcion encargada de eliminar bases de datos
+   * @param {database} Recibe la base de datos a eliminar 
+   */
   const handleDeleteDatabase = (database) => {
     const updatedDatabases = databases.filter((db) => db !== database);
     setDatabases(updatedDatabases);
 
-    // Clear the selected database and tables if the deleted database was selected
+    // Borra la base de datos y las tablas seleccionadas si se seleccionó la base de datos eliminada
     if (selectedDatabase === database) { 
       setSelectedDatabase(null);
       setTables([]); // Esta parte del código es la encargada de setear las tablas como lista vacía, el error se reporta en la documentacion escrita
@@ -35,12 +58,20 @@ const App = () => {
     }
   };
 
+  /**
+   * Funcion encargada de eliminar los XML store
+   * @param {table} Elimina la tabla seleccionada
+   */
   const handleDeleteTable = (table) => {
     const updatedTables = tables.filter((t) => t !== table);
     setTables(updatedTables);
     setSelectedTable(null); // If the deleted table was selected, clear the selected table
   };
-  
+
+  /**
+   * Funcion encargada de añadir columnas
+   * @returns 
+   */
   const handleAddColumn = () => {
     if (newColumnName.trim() === '') {
       alert('Favor ingresar el nombre de la columna.');
@@ -59,6 +90,10 @@ const App = () => {
     setNewColumnName('');
   };
   
+  /**
+   * Funcion encargada de añadir filas
+   * @returns 
+   */
   const handleAddRow = () => {
     if (newRow.length !== selectedTable.columns.length) {
       alert('Favor ingresar datos para todas las columnas.');
@@ -74,6 +109,10 @@ const App = () => {
     setNewRow([]);
   };  
 
+  /**
+   * Funcion encargada de llevar a cabo las busquedas en los XML store
+   * @returns 
+   */
   const handleSearch = () => {
     if (searchConditions.length === 0) {
       alert('Ingrese al menos una condición de búsqueda.');
@@ -87,7 +126,6 @@ const App = () => {
         const columnIndex = selectedTable.columns.indexOf(columnName);
   
         if (columnIndex === 0) {
-          // Special handling for the first column
           const cellValue = row[0].toString();
   
           if (operator === '=' && cellValue === value) {
@@ -114,6 +152,10 @@ const App = () => {
     setSearchResults(matchedRows);
   };
 
+  /**
+   * Funcion diseñada para establecer las condiciones de busqueda
+   * @returns 
+   */
   const handleAddCondition = () => {
     if (searchConditions.length >= 3) {
       alert('Solo se permiten hasta 3 condiciones de búsqueda.');
@@ -124,17 +166,32 @@ const App = () => {
     setSearchConditions([...searchConditions, newCondition]);
   };
 
+  /**
+   * Funcion encargada de remover condiciones de busqueda
+   * @param {index} Condicion a eliminar 
+   */
   const handleRemoveCondition = (index) => {
     const updatedConditions = searchConditions.filter((_, i) => i !== index);
     setSearchConditions(updatedConditions);
   };
 
+  /**
+   * Funcion encargada de manejar las condiciones de busqueda
+   * @param {index} Condicion
+   * @param {column} Columna 
+   * @param {operator} Operador
+   * @param {value} Valor 
+   */
   const handleConditionChange = (index, column, operator, value) => {
     const updatedConditions = [...searchConditions];
     updatedConditions[index] = [column, operator, value];
     setSearchConditions(updatedConditions);
   };
 
+  /**
+   * Funcion encargada de mostrar las condiciones de busqueda
+   * @returns 
+   */
   const renderSearchConditions = () => {
     return searchConditions.map((condition, index) => (
       <div key={index} style={{ marginBottom: '10px' }}>
@@ -165,6 +222,10 @@ const App = () => {
     ));
   };
 
+  /**
+   * Funcion encargada de renderizar los resultados de busqueda
+   * @returns 
+   */
   const renderSearchResults = () => {
     if (searchResults.length === 0) {
       return <div>No se encontraron resultados.</div>;
@@ -199,14 +260,15 @@ const App = () => {
     );
   };
   
-  
-
+  /**
+   * Almacena las cuentas creadas
+   */
   useEffect(() => {
     const storedAccounts = localStorage.getItem('accounts');
     if (storedAccounts) {
       setAccounts(JSON.parse(storedAccounts));
     }
-
+    // Establece bases de datos iniciales para la demostracion
     const initialDatabases = [
       {
         name: 'MyDatabase',
@@ -239,22 +301,41 @@ const App = () => {
     setSelectedTable(initialDatabases[0].tables[0]);
   }, []);
 
+  /**
+   * Almacena las cuentas creadas
+   */
   useEffect(() => {
     localStorage.setItem('accounts', JSON.stringify(accounts));
   }, [accounts]);
 
+  /**
+   * Setea el email
+   * @param {evento} Evento 
+   */
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
   };
 
+  /**
+   * Setea el username
+   * @param {event} Evento 
+   */
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
   };
 
+  /**
+   * Setea las contraseñas
+   * @param {event} Evento 
+   */
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
   };
 
+  /**
+   * Funcion encargada de llevar a cabo los registros de cuentas nuevas
+   * @returns 
+   */
   const handleRegister = () => {
     if (email.trim() === '' || username.trim() === '' || password.trim() === '') {
       alert('Debes llenar el formulario.');
@@ -293,12 +374,18 @@ const App = () => {
     setPassword('');
   };
 
+  /**
+   * Funcion encargada de realizar un logout
+   */
   const handleLogout = () => {
     setIsLoggedIn(false);
   };
 
+  /**
+   * Funcion encargada de crear una base de datos nueva
+   */
   const handleCreateDatabase = () => {
-    const databaseName = prompt('Ingrese el nombre de la base de datos:');
+    const databaseName = prompt('Ingrese el nombre de la base de datos nueva:');
     if (databaseName) {
       const newDatabase = {
         name: databaseName,
@@ -310,19 +397,27 @@ const App = () => {
     }
   };
 
+  /**
+   * Funcion encargada de seleccionar las bases de datos
+   * @param {database} Base de datos 
+   */
   const handleSelectDatabase = (database) => {
     setSelectedDatabase(database);
     setTables(database.tables);
     setSelectedTable(null);
   };
 
+  /**
+   * Funcion encargada de crear el XML store
+   * @returns 
+   */
   const handleCreateTable = () => {
     if (!selectedDatabase) {
-      alert('Debe seleccionar una base de datos antes de crear una tabla.');
+      alert('Debe seleccionar una base de datos antes de crear un XML store.');
       return;
     }
   
-    const tableName = prompt('Ingrese el nombre de la tabla:');
+    const tableName = prompt('Ingrese el nombre del XML store:');
     if (tableName) {
       const attributes = [];
       let attributeName;
@@ -353,20 +448,37 @@ const App = () => {
     }
   };  
 
+  /**
+   * Funcion encargada de seleccionar una XML store
+   * @param {XML store} Tabla 
+   */
   const handleSelectTable = (table) => {
     setSelectedTable(table);
     setSelectedCell(null);
   };
 
+  /**
+   * Funcion encargada de seleccionar las celdas en un XML store
+   * @param {rowIndex} Fila
+   * @param {columnIndex} Columna
+   * @param {value} Valor
+   */
   const handleCellClick = (rowIndex, columnIndex, value) => {
     setSelectedCell({ rowIndex, columnIndex });
     setEditedCellValue(value);
   };
 
+  /**
+   * Funcion encargada de modificar celdas
+   * @param {event} Evento 
+   */
   const handleCellChange = (event) => {
     setEditedCellValue(event.target.value);
   };
 
+  /**
+   * Funcion encargada de insertar modificaciones en las celdas
+   */
   const handleCellBlur = () => {
     if (selectedCell) {
       const { rowIndex, columnIndex } = selectedCell;
@@ -388,6 +500,10 @@ const App = () => {
     }
   };
 
+  /**
+   * Funcion encargada de renderizar la lista de las bases de datos
+   * @returns 
+   */
   const renderDatabaseList = () => {
     return databases.map((database) => (
       <li key={database.name} onClick={() => handleSelectDatabase(database)}>
@@ -397,21 +513,25 @@ const App = () => {
     ));
   };
 
+  /**
+   * Funcion encargada de renderizar los XML store
+   * @returns 
+   */
   const renderTableList = () => {
     return tables.map((table) => (
       <li key={table.name} onClick={() => handleSelectTable(table)}>
         {table.name}
-        <button style={{marginLeft:"10px"}} onClick={() => handleDeleteTable(table)}>Delete</button>
+        <button style={{marginLeft:"10px"}} onClick={() => handleDeleteTable(table)}>Eliminar</button>
       </li>
     ));
   };
 
+  /**
+   * Funcion encargada de guardar los cambios realizados
+   */
   const handleSaveChanges = () => {
     alert("Se guardaron los cambios con éxito");
-    // Perform save operation here
-    // You can update the state or send the updated data to a backend server
-  
-    // For example, you can update the local state with the modified tables
+
     const updatedDatabase = {
       ...selectedDatabase,
       tables: tables.map((table) => (table === selectedTable ? selectedTable : table)),
@@ -424,9 +544,13 @@ const App = () => {
     setDatabases(updatedDatabases);
   };
 
+  /**
+   * Funcion encargada de renderizar el contenido de los XML store
+   * @returns 
+   */
   const renderTableContent = () => {
     if (!selectedTable) {
-      return <div>No table selected</div>;
+      return <div>No se ha seleccionado ningun XML store</div>;
     }
   
     const { columns, rows } = selectedTable;
@@ -434,7 +558,6 @@ const App = () => {
     return (
       <div>
         <h3>{selectedTable.name}</h3>
-        {/* Add column form */}
       <div>
         <h4>Añadir Columna</h4>
         <input
@@ -446,7 +569,6 @@ const App = () => {
         <button style={{marginLeft:"10px"}} onClick={handleAddColumn}>Añadir Columna</button>
       </div>
 
-      {/* Add row form */}
       <div>
         <h4>Añadir Fila</h4>
         {selectedTable.columns.map((column, columnIndex) => (
@@ -512,6 +634,9 @@ const App = () => {
     );
   };      
 
+  /**
+   * Funcion encargada del login
+   */
   if (isLoggedIn) {
     return (
       <div>
@@ -527,10 +652,10 @@ const App = () => {
                 </ul>
               </li>
               <li>
-                <strong>Tables</strong>
+                <strong>XML stores</strong>
                 <ul>
                   {renderTableList()}
-                  <li onClick={handleCreateTable}>Crear nueva tabla</li>
+                  <li onClick={handleCreateTable}>Crear un XML store</li>
                 </ul>
               </li>
               <li onClick={handleLogout}><strong>Logout</strong></li>
@@ -542,6 +667,9 @@ const App = () => {
     );
   }
 
+  /**
+   * Pantalla de login
+   */
   return (
     <div className="container" style={{ background: 'lightgray', marginTop: 20, padding: 20 }}>
       <div>
