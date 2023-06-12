@@ -23,6 +23,18 @@ const App = () => {
   const [newColumnName, setNewColumnName] = useState('');
   const [newRow, setNewRow] = useState([]);
 
+  const handleDeleteDatabase = (database) => {
+    const updatedDatabases = databases.filter((db) => db !== database);
+    setDatabases(updatedDatabases);
+
+    // Clear the selected database and tables if the deleted database was selected
+    if (selectedDatabase === database) { 
+      setSelectedDatabase(null);
+      setTables([]); // Esta parte del código es la encargada de setear las tablas como lista vacía, el error se reporta en la documentacion escrita
+      setSelectedTable(null);
+    }
+  };
+
   const handleDeleteTable = (table) => {
     const updatedTables = tables.filter((t) => t !== table);
     setTables(updatedTables);
@@ -361,6 +373,7 @@ const App = () => {
     return databases.map((database) => (
       <li key={database.name} onClick={() => handleSelectDatabase(database)}>
         {database.name}
+        <button style={{marginLeft:"10px"}} onClick={() => handleDeleteDatabase(database)}>Eliminar</button>
       </li>
     ));
   };
@@ -369,6 +382,7 @@ const App = () => {
     return tables.map((table) => (
       <li key={table.name} onClick={() => handleSelectTable(table)}>
         {table.name}
+        <button style={{marginLeft:"10px"}} onClick={() => handleDeleteTable(table)}>Delete</button>
       </li>
     ));
   };
@@ -498,17 +512,6 @@ const App = () => {
                 <ul>
                   {renderTableList()}
                   <li onClick={handleCreateTable}>Crear nueva tabla</li>
-                </ul>
-              </li>
-              <li>
-                <strong>Borrar Tablas</strong>
-                <ul>
-                  {tables.map((table) => (
-                    <div key={table.name}>
-                      <span style={{marginLeft:"10px"}}>{table.name}</span>
-                      <button style={{marginLeft:"10px"}} onClick={() => handleDeleteTable(table)}>Delete</button>
-                    </div>
-                  ))}
                 </ul>
               </li>
               <li onClick={handleLogout}><strong>Logout</strong></li>
