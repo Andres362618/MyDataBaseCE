@@ -169,18 +169,37 @@ const App = () => {
     if (searchResults.length === 0) {
       return <div>No se encontraron resultados.</div>;
     }
-
+  
     return (
       <div>
         <h3>Resultados de búsqueda</h3>
-        <ul>
-          {searchResults.map((row, index) => (
-            <li key={index}>{row.join(', ')}</li>
-          ))}
-        </ul>
+        <table style={{ borderCollapse: 'collapse' }}>
+          <thead>
+            <tr>
+              {selectedTable.columns.map((column) => (
+                <th key={column} style={{ border: '1px solid black', padding: '8px' }}>
+                  {column}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {searchResults.map((row, index) => (
+              <tr key={index}>
+                {row.map((cell, cellIndex) => (
+                  <td key={cellIndex} style={{ border: '1px solid black', padding: '8px' }}>
+                    {cell}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     );
   };
+  
+  
 
   useEffect(() => {
     const storedAccounts = localStorage.getItem('accounts');
