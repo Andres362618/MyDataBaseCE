@@ -3,6 +3,7 @@
  * @author Andrés Madrigral, Claudio Arce, Julia Harlander
  * @version 1.0
  * @description Esta es la funcion principal de la pagina web
+ * @date 12/6/2023
  */
 
 /**
