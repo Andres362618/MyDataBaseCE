@@ -623,7 +623,7 @@ const App = () => {
           ))}
         </tbody>
       </table>
-      <button style={{marginTop:"10px"}} onClick={handleSaveChanges}>Guardar Cambios</button>
+      <button style={{marginTop:"10px"}} onClick={handleSaveChanges}>Commit</button>
       <div style={{ marginBottom: '10px' }}>
           <h4>Buscar registros</h4>
           {renderSearchConditions()}
